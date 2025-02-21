@@ -42,30 +42,32 @@ int main(void) {
         switch (event.type) {
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
                 printf("Fermeture de la fenetre.\n");
-                end = true;
-                break;
+            end = true;
+            break;
 
             case ALLEGRO_EVENT_KEY_DOWN:
                 al_draw_filled_rectangle(x - 10, y - 10, x + 10, y + 10, al_map_rgb(0, 0, 255));
 
-                // Mise à jour de la position
-                if (event.keyboard.keycode == ALLEGRO_KEY_Z) {
-                    y -= MOVE_STEP;
-                } else if (event.keyboard.keycode == ALLEGRO_KEY_Q) {
-                    x -= MOVE_STEP;
-                } else if (event.keyboard.keycode == ALLEGRO_KEY_S) {
-                    y += MOVE_STEP;
-                } else if (event.keyboard.keycode == ALLEGRO_KEY_D) {
-                    x += MOVE_STEP;
-                }
+            // Mise à jour de la position
+            if (event.keyboard.keycode == ALLEGRO_KEY_Z) {
+                y -= MOVE_STEP;
+            } else if (event.keyboard.keycode == ALLEGRO_KEY_Q) {
+                x -= MOVE_STEP;
+            } else if (event.keyboard.keycode == ALLEGRO_KEY_S) {
+                y += MOVE_STEP;
+            } else if (event.keyboard.keycode == ALLEGRO_KEY_D) {
+                x += MOVE_STEP;
+            }
 
-                al_draw_filled_rectangle(x - 10, y - 10, x + 10, y + 10, al_map_rgb(0, 255, 0));
+            al_draw_filled_rectangle(x - 10, y - 10, x + 10, y + 10, al_map_rgb(0, 255, 0));
 
-                al_flip_display();
-                break;
+            al_flip_display();
+            break;
             case ALLEGRO_EVENT_MOUSE_AXES:
-                al_draw_filled_circle(event.mouse.x, event.mouse.y, 5, al_map_rgb(255, 0, 0)); // Cercle rouge visible
-                al_flip_display();
+                printf("%d\n", event.mouse.button);
+                    al_draw_filled_circle(event.mouse.x, event.mouse.y, 5, al_map_rgb(255, 0, 0));
+                    al_flip_display();
+
                 break;
             default:
                 break;
