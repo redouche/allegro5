@@ -64,7 +64,7 @@ int main(void) {
             al_flip_display();
             break;
             case ALLEGRO_EVENT_MOUSE_AXES:
-                printf("%d\n", event.mouse.button);
+                printf("Event : %d\n", event.mouse.button);
                     al_draw_filled_circle(event.mouse.x, event.mouse.y, 5, al_map_rgb(255, 0, 0));
                     al_flip_display();
 
