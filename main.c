@@ -3,9 +3,8 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 
-#define WIDTH 600
-#define HEIGHT 400
 #define MOVE_STEP 5
+#define PLAYER_SIZE 50
 
 int main(void) {
     // Déclarations
@@ -15,33 +14,40 @@ int main(void) {
     ALLEGRO_EVENT event;
 
     bool end = false;
-    int x = WIDTH / 2, y = HEIGHT / 2; // Position de départ
+    int screen_width = 0, screen_height = 0;
+    int x, y;
 
-    // Variables pour le mouvement continu
+    // Mouvement
     bool up = false, down = false, left = false, right = false;
 
     // Initialisations
     assert(al_init());
     assert(al_install_keyboard());
-    assert(al_install_mouse());
+    al_init_primitives_addon();
 
-    assert(al_init_primitives_addon());
-
-    window = al_create_display(WIDTH, HEIGHT);
+    window = al_create_display(1, 1);
     assert(window);
     al_set_window_title(window, "Allegro 5");
 
+    // Plein écran
+    al_set_display_flag(window, ALLEGRO_FULLSCREEN_WINDOW, true);
+    screen_width = al_get_display_width(window);
+    screen_height = al_get_display_height(window);
+
+    // Position initiale au centre
+    x = screen_width / 2;
+    y = screen_height / 2;
+
     fifo = al_create_event_queue();
-    timer = al_create_timer(1.0 / 60); // 60 FPS
+    timer = al_create_timer(1.0 / 60);
 
     al_register_event_source(fifo, al_get_display_event_source(window));
     al_register_event_source(fifo, al_get_keyboard_event_source());
-    al_register_event_source(fifo, al_get_mouse_event_source());
     al_register_event_source(fifo, al_get_timer_event_source(timer));
 
     al_start_timer(timer);
 
-    // Boucle du jeu
+    // Boucle principale
     while (!end) {
         al_wait_for_event(fifo, &event);
 
@@ -75,14 +81,18 @@ int main(void) {
                 if (left) x -= MOVE_STEP;
                 if (right) x += MOVE_STEP;
 
+                // Affichage
                 al_clear_to_color(al_map_rgb(255, 255, 255));
-                al_draw_filled_rectangle(x - 10, y - 10, x + 10, y + 10, al_map_rgb(0, 255, 0));
+
+                al_draw_rectangle(0, 0, screen_width, screen_height, al_map_rgb(0, 0, 0), 5);
+                al_draw_filled_rectangle(x - PLAYER_SIZE / 2, y - PLAYER_SIZE / 2, x + PLAYER_SIZE / 2, y + PLAYER_SIZE / 2, al_map_rgb(0, 0, 255));
+
                 al_flip_display();
                 break;
         }
     }
 
-    // Libération de la mémoire
+    // Libération mémoire
     al_destroy_display(window);
     al_destroy_event_queue(fifo);
     al_destroy_timer(timer);
